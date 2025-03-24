@@ -24,7 +24,7 @@ export class InputFieldsComponent {
   validate(): Array<string>
   {
     let errors: Array<string> = [];
-    const emailRegex = RegExp("^[^\s@]+@[^\s@]+\.[^\s@]+$");
+    const emailRegex = RegExp("[A-Za-z0-9\._%+\-]+@[A-Za-z0-9\.\-]+\.[A-Za-z]{2,}");
     if (this.name.length < 2)
       errors.push("Name must have more than 2 characters.");
     if (! emailRegex.test(this.email))
@@ -49,5 +49,15 @@ export class InputFieldsComponent {
       return;
     }
     this.errorBox.nativeElement.hidden = true;
+    let res = fetch("https://localhost:7081/api/user",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({Name: this.name,Email: this.email,Password: this.password}),
+      }
+    ).then(value => {
+      console.log(value);
+      debugger
+    });
   }
 }
